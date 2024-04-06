@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="actions">
+            <div>
+                <button onclick="tic_tac_toe.restart()" class="btn_restart hidden">Reiniciar</button>
+            </div>
+            <div>
+                <button onclick="tic_tac_toe.start()" class="btn_start">Iniciar</button>
+            </div>
+        </div>
+        <div class="game_over">
+        </div>
+        <div class="game">
+
+        </div>
+        <div class="player hidden">
+            <div class="player1">
+                <p>Jogador 1:</p>
+            </div>
+            <div class="player2">
+                <p>Jogador 2:</p>
+            </div>
+        </div>
+        
+    </div>
+    
+
+
+    <script src="./js/tic_tac_toe.js"></script>
+    <script>
+        tic_tac_toe.init(document.querySelector('.container'));
+    </script>
+</body>
+</html>
