@@ -20,7 +20,6 @@ const tic_tac_toe = {
         [2, 4, 6]
     ],
     animation: null,
-
     player1: {
         element: null,
         name: '',
@@ -48,7 +47,6 @@ const tic_tac_toe = {
             return true;
         }
     },
-
     player2: {
         element: null,
         name: '',
@@ -76,13 +74,16 @@ const tic_tac_toe = {
             return true;
         }
     },
-
     container_element: {
         element: null,
         visible: false,
 
+        /**
+         * 
+         * @param {HTMLElement} container 
+         */
         init: function (container) {
-            this.element = container
+            this.element = container;
             this.visible = !this.element.classList.contains('hidden');
         },
 
@@ -127,11 +128,19 @@ const tic_tac_toe = {
             return true;
         },
 
+        /**
+         * 
+         * @param {int[]} winning_sequences 
+         */
         winner: function (winning_sequences) {
-            console.log(winning_sequences);
-            this.element.children.item(winning_sequences[0]).classList.add('winner');
-            this.element.children.item(winning_sequences[1]).classList.add('winner');
-            this.element.children.item(winning_sequences[2]).classList.add('winner');
+            winning_sequences
+                .forEach(item => {
+                    this.element
+                        .children
+                        .item(item)
+                        .classList
+                        .add('winner');        
+                });
         },
 
         old: function () {
@@ -174,13 +183,20 @@ const tic_tac_toe = {
     container_player: {
         element: null,
         visible: false,
-        element_player1: null,
-        elemnt_player2: null,
+        element_players: [],
 
         init: function (container) {
-            this.element = container
-            this.element_player1 = this.element.children.item(0);
-            this.element_player2 = this.element.children.item(1);
+            this.element = container;
+            for (i = 1; i <= 2; i++)
+            {
+                const player = this.element
+                    .querySelector(`#player${i}`);
+                if (player != null) {
+                    this.element_players
+                        .push(player);
+                }
+            }
+            
             this.visible = !this.element.classList.contains('hidden');
         },
 
@@ -200,12 +216,17 @@ const tic_tac_toe = {
             return true;
         },
 
-        define_player1: function (name, simbol) {
-            this.element_player1.innerHTML = `${tic_tac_toe.utilHtml.inserirParagrafo('Jogador 1:')} ${tic_tac_toe.utilHtml.inserirParagrafo(name)} ${tic_tac_toe.utilHtml.inserirParagrafo(simbol)}`;
-        },
-
-        define_player2: function (name, simbol) {
-            this.element_player2.innerHTML = `${tic_tac_toe.utilHtml.inserirParagrafo('Jogador 2:')} ${tic_tac_toe.utilHtml.inserirParagrafo(name)} ${tic_tac_toe.utilHtml.inserirParagrafo(simbol)}`;
+        define_player: function (name, simbol, playerPosition) {
+            const player = this.element_players
+                .find(
+                    /**
+                     * 
+                     * @param {HTMLElement} player 
+                     */
+                    function (player) {
+                        return player.id == `player${playerPosition}`;
+                });
+            player.innerHTML = `${tic_tac_toe.utilHtml.inserirParagrafo(`Jogador ${playerPosition}:`)} ${tic_tac_toe.utilHtml.inserirParagrafo(name)} ${tic_tac_toe.utilHtml.inserirParagrafo(simbol)}`;
         },
     },
     btn_start: {
@@ -213,7 +234,7 @@ const tic_tac_toe = {
         visible: false,
 
         init: function (container) {
-            this.element = container
+            this.element = container;
             this.visible = !this.element.classList.contains('hidden');
         },
 
@@ -258,28 +279,109 @@ const tic_tac_toe = {
             return true;
         }
     },
+    form_jogador_config: {
+        element: null,
+        visible: false,
 
+        /**
+         * 
+         * @param {HTMLElement} container 
+         */
+        init: function(container){
+            this.element = container;
+            this.visible = !this.element.classList.contains("hidden");
+        },
+
+        /**
+         * 
+         * @returns boolean
+         */
+        view: function() {
+            if (this.visible) return false;
+            
+            this.element.classList.remove('hidden');
+            this.visible= true;
+            return true;
+        },
+
+        /**
+         * 
+         * @returns boolean
+         */
+        hidden: function() {
+            if (!this.visible) return false;
+
+            this.element.classList.add('hidden');
+            this.visible = false;
+            return true;
+        }
+
+    },
+
+    /**
+     * 
+     * @param {HTMLElement} container 
+     */
     init: function (container) {
         this.container_element.init(container);
-        this.container_game.init(container.querySelector('.game'));
-        this.container_atction.init(container.querySelector('.actions'));
-        this.container_player.init(container.querySelector('.player'));
+        this.container_game.init(container.querySelector('#game'));
+        this.container_atction.init(container.querySelector('#actions'));
+        this.container_player.init(container.querySelector('#player'));
+        this.form_jogador_config.init(container.querySelector("#form_player_config"));
 
-        this.btn_start.init(this.container_atction.element.querySelector('.btn_start'));
-        this.btn_restar.init(this.container_atction.element.querySelector('.btn_restart'));
+        this.btn_start.init(this.container_atction.element.querySelector('#btn_start'));
+        this.btn_restar.init(this.container_atction.element.querySelector('#btn_restart'));
 
         this.animation_init();
-        // this.container_game.hidden();
-        // this.container_player.hidden();
         this.btn_restar.hidden();
     },
 
-    start: function () {
+    select_player: function () {
         this.animation_stop();
+        this.btn_start.hidden();
+        this.form_jogador_config.view();
+        this.container_game.hidden();
+        this.container_player.hidden();
+    },
+
+    /**
+     * 
+     * @param {int} playerPosition 
+     */
+    on_change_player_select: function (playerPosition) {
+        const select = this.form_jogador_config.element.querySelector(`#jogador_${playerPosition}_select`);
+        const selectValue = select.options[select.selectedIndex].value
+        this.view_player_input(playerPosition, selectValue);
+    },
+
+    /**
+     * 
+     * @param {int} playerPosition 
+     * @param {string} selectValue 
+     */
+    view_player_input: function (playerPosition, selectValue) {
+        const inputName = this.form_jogador_config.element.querySelector(`#jogador_${playerPosition}_name`);
+        if (selectValue == "maquina") {
+            inputName.classList.add('hidden');
+            inputName.value = "Maquina";
+        }
+        else {
+            inputName.classList.remove('hidden');
+            inputName.value = "";
+        }
+    },
+
+    start: function () {
         this.board.fill('');
         this.draw();
         this.gameover = false;
-        this.btn_start.hidden();
+        const players = {};
+        for (let i = 1; i <= 2; i++ ) {
+            const player = this.form_jogador_config.element.querySelector(`#jogador_${i}_name`);
+            players[`player${i}`] = player.value;
+        }
+        this.define_players(players.player1, players.player2);
+        this.form_jogador_config.hidden();
         this.btn_restar.view();
         this.container_game.view();
         this.container_player.view();
@@ -296,6 +398,11 @@ const tic_tac_toe = {
         this.container_player.view();
     },
 
+    /**
+     * 
+     * @param {int} position 
+     * @returns 
+     */
     make_play: function (position) {
         if (this.gameover) return false;
         if (this.board[position] !== '') return false;
@@ -320,9 +427,9 @@ const tic_tac_toe = {
 
     game_is_over: function () {
         this.gameover = true;
-        alert("GAME OVER");
-        this.btn_start.classList.remove('hidden');
-        this.btn_restar.classList.add('hidden');
+        // alert("GAME OVER");
+        this.btn_start.element.classList.remove('hidden');
+        this.btn_restar.element.classList.add('hidden');
     },
 
     check_winning_sequences: function (simbol) {
@@ -330,13 +437,17 @@ const tic_tac_toe = {
             if (this.board[this.winning_sequences[i][0]] == simbol &&
                 this.board[this.winning_sequences[i][1]] == simbol &&
                 this.board[this.winning_sequences[i][2]] == simbol) {
-                // console.log('Sequencia Vencedora: ', i);
                 return i;
             }
         }
         return -1;
     },
 
+    /**
+     * 
+     * @param {int} winning_sequences_index 
+     * @param {*} player 
+     */
     winner: function (winning_sequences_index, player) {
         this.container_game.winner(this.winning_sequences[winning_sequences_index]);
     },
@@ -357,8 +468,8 @@ const tic_tac_toe = {
         this.player2.turn_index = (this.simbols.turn_index === 0 ? 1 : 0);
 
         this.container_player.view();
-        this.container_player.define_player1(this.player1.name, this.simbols.options[this.player1.turn_index]);
-        this.container_player.define_player2(this.player2.name, this.simbols.options[this.player2.turn_index]);
+        this.container_player.define_player(this.player1.name, this.simbols.options[this.player1.turn_index], "1");
+        this.container_player.define_player(this.player2.name, this.simbols.options[this.player2.turn_index], "2");
         return true;
     },
 

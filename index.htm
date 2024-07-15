@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,37 +8,77 @@
     <title>Game</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <div class="container">
-        <div class="actions">
-            <div>
-                <button onclick="tic_tac_toe.restart()" class="btn_restart hidden">Reiniciar</button>
-            </div>
-            <div>
-                <button onclick="tic_tac_toe.start()" class="btn_start">Iniciar</button>
-            </div>
-        </div>
-        <div class="game_over">
-        </div>
-        <div class="game">
 
+<body>
+    <div id="container" class="container">
+        <div id="actions" class="actions">
+            <div>
+                <button onclick="tic_tac_toe.restart()" id="btn_restart" class="btn_restart hidden">Reiniciar</button>
+            </div>
+            <div>
+                <button onclick="tic_tac_toe.select_player()" id="btn_start" class="btn-primary">Selecionar jogadores</button>
+            </div>
         </div>
-        <div class="player hidden">
-            <div class="player1">
+        <form id="form_player_config" class="form-player-config hidden">
+            <div class="player_config_inputs">
+                <div>
+                    <p>Jogador 1:</p>
+                    <div>
+                        <select name="jogador_1_select" id="jogador_1_select" onchange="tic_tac_toe.on_change_player_select(1)">
+                            <option value="player">Jogador</option>
+                            <option value="maquina">Maquina</option>
+                        </select>
+                        <input id="jogador_1_name" type="text" placeholder="jogador 1">
+                    </div>
+                    <!-- <div>
+                        <select name="tipo_1_select" id="tipo_1_select">
+                            <option value="X">X</option>
+                            <option value="O">O</option>
+                        </select>
+                    </div> -->
+                </div>
+                <div>
+                    <p>Jogador 2: </p>
+                    <div>
+                        <select name="jogador_2_select" id="jogador_2_select" onchange="tic_tac_toe.on_change_player_select(2)">
+                            <option value="player">Jogador</option>
+                            <option value="maquina">Maquina</option>
+                        </select>
+                        <input id="jogador_2_name" type="text" placeholder="jogador 2">
+                    </div>
+                    <!-- <div>
+                        <select name="tipo_1_select" id="tipo_1_select">
+                            <option value="X">X</option>
+                            <option value="O">O</option>
+                        </select>
+                    </div> -->
+                </div>
+            </div>
+            <div class="player_config_action">
+                <button type="button" onclick="tic_tac_toe.start()" class="btn-primary">Iniciar</button>
+            </div>
+        </form>
+        <div id="game_over" class="game_over">
+        </div>
+        <div id="game" class="game">
+        </div>
+        <div id="player" class="player hidden">
+            <div id="player1" class="player1">
                 <p>Jogador 1:</p>
             </div>
-            <div class="player2">
+            <div id="player2" class="player2">
                 <p>Jogador 2:</p>
             </div>
         </div>
-        
+
     </div>
-    
+
 
 
     <script src="./js/tic_tac_toe.js"></script>
     <script>
-        tic_tac_toe.init(document.querySelector('.container'));
+        tic_tac_toe.init(document.querySelector('#container'));
     </script>
 </body>
+
 </html>
