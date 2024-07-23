@@ -1,0 +1,7 @@
+.align-item-center {
+    align-items: center !important;
+}
+
+.align-item-start {
+    align-items: flex-start !important;
+}

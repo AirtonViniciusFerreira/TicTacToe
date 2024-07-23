@@ -10,13 +10,23 @@
 </head>
 
 <body>
-    <div id="container" class="container">
-        <div id="actions" class="actions">
-            <div>
-                <button onclick="tic_tac_toe.restart()" id="btn_restart" class="btn_restart hidden">Reiniciar</button>
+    <div id="container" class="container p-5">
+        <div id="actions" class="row p-4">
+            <div class="col text-align-center">
+                <button 
+                    onclick="tic_tac_toe.restart()"
+                    id="btn_restart" 
+                    class="btn_restart p-2">
+                    Reiniciar
+                </button>
             </div>
-            <div>
-                <button onclick="tic_tac_toe.select_player()" id="btn_start" class="btn-primary">Selecionar jogadores</button>
+            <div class="col text-align-center">
+                <button 
+                    onclick="tic_tac_toe.select_player()"
+                    id="btn_start"
+                    class="btn-primary p-2">
+                    Selecionar<br>jogadores
+                </button>
             </div>
         </div>
         <form id="form_player_config" class="form-player-config hidden">
@@ -24,11 +34,17 @@
                 <div>
                     <p>Jogador 1:</p>
                     <div>
-                        <select name="jogador_1_select" id="jogador_1_select" onchange="tic_tac_toe.on_change_player_select(1)">
+                        <select 
+                            name="jogador_1_select"
+                            id="jogador_1_select"
+                            onchange="tic_tac_toe.on_change_player_select(1)">
                             <option value="player">Jogador</option>
                             <option value="maquina">Maquina</option>
                         </select>
-                        <input id="jogador_1_name" type="text" placeholder="jogador 1">
+                        <input 
+                            id="jogador_1_name" 
+                            type="text"
+                            placeholder="jogador 1">
                     </div>
                     <!-- <div>
                         <select name="tipo_1_select" id="tipo_1_select">
@@ -40,7 +56,10 @@
                 <div>
                     <p>Jogador 2: </p>
                     <div>
-                        <select name="jogador_2_select" id="jogador_2_select" onchange="tic_tac_toe.on_change_player_select(2)">
+                        <select 
+                            name="jogador_2_select"
+                            id="jogador_2_select"
+                            onchange="tic_tac_toe.on_change_player_select(2)">
                             <option value="player">Jogador</option>
                             <option value="maquina">Maquina</option>
                         </select>
